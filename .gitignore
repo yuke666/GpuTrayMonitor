@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.data/
+demo/
+_selftest_tmp/
+.build/
+dist/
+build/*.spec
+docs/*.tmp
+*.log
+
+# 私钥绝不入库（公钥 .cer 可以）
+build/signing/*.pfx
+*.pfx
+
+# 打包产物里的运行时数据
+portable/**/.data/
