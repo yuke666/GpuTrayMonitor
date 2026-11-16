@@ -2,6 +2,8 @@
 
 [中文](README.md) · **English**
 
+Version **v1.0.0** · see [CHANGELOG.md](CHANGELOG.md)
+
 A GPU VRAM monitor that lives in the Windows system tray: the tray icon shows VRAM pressure, a compact strip
 on the taskbar shows the key numbers, and the main window groups processes by **project** — every `python.exe`
 is traced back to the project folder it belongs to (including the conda/venv and the git branch).

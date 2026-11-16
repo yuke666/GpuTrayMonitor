@@ -2,6 +2,8 @@
 
 **中文** · [English](README.en.md)
 
+当前版本 **v1.0.0** · 更新记录见 [CHANGELOG.md](CHANGELOG.md)
+
 常驻系统托盘的 GPU 显存监控：托盘图标显示显存压力，任务栏一条关键指标，主窗口按 **项目** 聚合进程，
 能把每个 `python.exe` 回溯到它所属的工程目录（连 conda / venv、git 分支一起标出来）。
 
@@ -15,18 +17,6 @@
 - **托盘优先**：双击启动直接进托盘，不弹窗口；任务栏指标条显示 `已用/最大显存 · 占比 · 使用率`
 - **Windows 10/11 x64**，实测环境：RTX 5090 D v2 24 GB + Intel 核显，Windows 11 26H2
 
----
-
-常驻 Windows 系统托盘的 GPU 显存监控工具。除了看显存总量，它还能把**每一个 `python.exe` 回溯到它所属的项目**——同一个解释器跑着十几个进程时，你能一眼看出哪个属于 `Qwen-Finetune`、哪个属于 `data-pipeline`。
-
-![界面截图](docs/screenshot.png)
-
-- 纯 Python 标准库实现，**零第三方依赖**（不需要 pywin32 / pynvml / Pillow / psutil）
-- 提供**单文件 exe**（内置 Python，免安装）与 VBS 启动器两种方式
-- Python 3.10+，Windows 10 / 11
-- 数据来源：NVML + Windows GPU 性能计数器 + DXGI + 进程 PEB
-
----
 
 ## 快速开始
 
