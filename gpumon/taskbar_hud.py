@@ -22,6 +22,8 @@ import tkinter as tk
 import tkinter.font as tkfont
 import winreg
 
+from .util import fmt_speed
+
 BG_KEY = "#010203"      # 透明色键（避免与主题色冲突）
 
 UI_FONT = "Microsoft YaHei UI"
@@ -367,9 +369,9 @@ class TaskbarHud:
 
     # -- 绘制 --------------------------------------------------------------
     def _segments(self, snap) -> list[tuple[str, tkfont.Font, str, int]]:
-        """(文字, 字体, 颜色, 之前的间距)。重要度：已用/最大 → 占比 → 利用率。"""
+        """(文字, 字体, 颜色, 之前的间距)。重要度：已用/最大 → 占比 → 利用率 → 网速。"""
         pal = self._palette()
-        if not snap or not snap.gpus:
+        if not snap:
             return [("显存监视器 初始化中", self._font(13), pal["muted"], 0)]
         row: list[tuple[str, tkfont.Font, str, int]] = []
         for index, gpu in enumerate(snap.gpus[:2]):
@@ -385,6 +387,18 @@ class TaskbarHud:
                         self._pressure(gpu.used_pct, pal), self._s(7)))
             row.append((f"({gpu.util}%)", self._font(14, mono=True), pal["muted"],
                         self._s(7)))
+
+        if getattr(snap, "net_ok", True):
+            up = fmt_speed(getattr(snap, "net_up_bps", 0.0))
+            down = fmt_speed(getattr(snap, "net_down_bps", 0.0))
+            row.append(("│", self._font(13), pal["sep"], self._s(10) if row else 0))
+            row.append(("↑", self._font(14), pal["muted"], self._s(6)))
+            row.append((f"{up}/s", self._font(14, mono=True), pal["fg"], self._s(4)))
+            row.append(("↓", self._font(14), pal["muted"], self._s(8)))
+            row.append((f"{down}/s", self._font(14, mono=True), pal["fg"], self._s(4)))
+
+        if not row:
+            return [("显存监视器 初始化中", self._font(13), pal["muted"], 0)]
         return row
 
     def _refresh(self) -> None:

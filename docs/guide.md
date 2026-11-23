@@ -252,10 +252,11 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\{0..4}\18
 
 ![任务栏指标条](taskbar.png)
 
-- 内容：`● GPU 11.2/23.9G 47% (0%) │ ● 核显 2.0/17.9G 11% (65%)`，按重要度排列：
+- 内容：`● GPU 11.2/23.9G 47% (0%) │ ● 核显 2.0/17.9G 11% (65%) │ ↑ 12K/s ↓ 3.4M/s`，按重要度排列：
   1. **已用 / 最大显存**（黑色主文字）
   2. **显存占用比**（加粗，按压力变色）
   3. **使用率**（括号内，次要信息）
+  4. **网速**（最右，↑ 上行 / ↓ 下行，所有网卡求和，不含回环）
   圆点颜色与主界面一致（独显绿 / 核显蓝紫）
 - 背景完全透明，直接画在任务栏上，所以底色天然与任务栏一致；文字颜色跟随 Windows 的浅色 / 深色任务栏主题自动切换，透明色键也取同色系中性色，抗锯齿边缘不会发灰发黑
 - 字号较大（主数值 18pt），高度会按任务栏实际高度自动收缩，不会被裁切
@@ -325,6 +326,7 @@ HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\{0..4}\18
 | 核显已用 / 上限 / 利用率 | PDH 适配器计数器 + `GPU Engine` 汇总 | 核显没有独立显存，按共享内存口径统计；无温度传感器 |
 | 每进程显存 | 性能计数器 `\GPU Process Memory(*)\Local Usage` | 与任务管理器“专用 GPU 内存”同源，覆盖 CUDA、DirectML、游戏、浏览器等**所有** GPU 上下文 |
 | 每进程共享内存 / 引擎占用 | `Non Local Usage`、`GPU Engine(*)\Utilization Percentage` | 详情面板展示 |
+| 全网卡上行/下行速率 | PDH `\Network Interface(*)\Bytes Sent/Received/sec` | 所有接口求和，跳过回环；任务栏指标条最右侧 |
 | 适配器识别（LUID ↔ 显卡） | DXGI `IDXGIFactory1::EnumAdapters1` | 区分独显 / 核显 / 软件渲染，同型号重复条目自动去重 |
 | 进程命令行、工作目录、环境变量 | PEB 直接读取 | 无需 WMI，不受 WMI 权限/服务状态影响 |
 

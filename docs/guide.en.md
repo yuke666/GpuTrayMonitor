@@ -104,6 +104,7 @@ other immediately:
 | Total / used VRAM, utilization, temperature | NVML (`nvml.dll`, no CUDA toolkit needed) |
 | Per-process VRAM | PDH counters `\GPU Process Memory(*)\Local Usage` / `Non Local Usage` |
 | Per-process GPU utilization | PDH `\GPU Engine(*)\Utilization Percentage` |
+| Total up/down rate | PDH `\Network Interface(*)\Bytes Received/Sent/sec` summed over all adapters (loopback excluded) |
 | Adapter identity / LUID mapping | DXGI `IDXGIFactory1::EnumAdapters1` |
 | Per-process command line, cwd, env | PEB via `NtQueryInformationProcess` |
 

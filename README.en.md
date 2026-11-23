@@ -13,7 +13,7 @@ traced back to the project it belongs to (including the venv/conda and the git b
 - **No third-party dependencies** — Python standard library plus built-in Windows APIs (NVML / PDH / DXGI / PEB)
 - **Per-project attribution** — reads command line, working directory and environment from the process PEB,
   then walks up looking for `.git` / `pyproject.toml` / `requirements.txt`
-- **Tray first** — launching gives you a tray icon and a taskbar strip, no window
+- **Tray first** — launching gives you a tray icon and a taskbar strip (VRAM · pressure · util · network), no window
 - **Two builds** — self-contained exe (bundled Python 3.13) or script build (Python 3.10+)
 - Windows 10/11 x64; tested on RTX 5090 D v2 24 GB + Intel iGPU, Windows 11 26H2
 
@@ -33,6 +33,8 @@ The exe bundles its own Python. Already have Python 3.10+? Just double-click `st
 | Left-click the tray icon / click the taskbar strip | open the main window |
 | Right-click the tray icon | show window, refresh, pause, interval, four switches, quit |
 | Drag the taskbar strip | move it along the taskbar, position is remembered |
+| Right side of the strip (↑ / ↓) | summed up/down rate of all adapters (loopback excluded) |
+| Right side of the strip | ↑ / ↓ show the summed up/down rate of **all network adapters** (loopback excluded) |
 | Close the main window | hide to the tray, monitoring continues |
 
 The window lists one row per project plus its processes (VRAM, share, PID, adapter, command line). The detail

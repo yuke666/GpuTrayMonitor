@@ -350,7 +350,9 @@ class Attributor:
             score, markers = _score_dir(current)
             if score > best_score:
                 best_score, best_dir, best_markers = score, current, markers
-            if ".git" in markers:
+            # 就近的强标记优先：命中 .git 或任意 ≥35 的标记就停，
+            # 否则父级仓库会把子目录里的独立工程“吃掉”。
+            if ".git" in markers or score >= 35:
                 break
             parent = os.path.dirname(current)
             if not parent or parent == current or _is_generic(parent):

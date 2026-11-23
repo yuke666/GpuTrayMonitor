@@ -7,6 +7,7 @@ import time
 from dataclasses import dataclass, field
 
 from . import gpu as gpu_mod
+from . import net as net_mod
 from .attrib import Attribution, Attributor
 from .procs import ProcDetail, ProcTable
 from .util import fmt_mib
@@ -103,6 +104,9 @@ class Snapshot:
     errors: list[str] = field(default_factory=list)
     elapsed_ms: float = 0.0
     history: dict[int, list[float]] = field(default_factory=dict)
+    net_up_bps: float = 0.0
+    net_down_bps: float = 0.0
+    net_ok: bool = True
 
     @property
     def total_used_mib(self) -> float:
@@ -147,6 +151,7 @@ class Monitor(threading.Thread):
         self.config = config
         self.on_snapshot = on_snapshot
         self.collector = gpu_mod.GpuCollector()
+        self.net = net_mod.NetSampler()
         self.table = ProcTable()
         self.attributor = Attributor(config.overrides)
         self._stop = threading.Event()
@@ -190,6 +195,7 @@ class Monitor(threading.Thread):
     def sample(self) -> Snapshot:
         t0 = time.perf_counter()
         gpus, proc_vram, smi, errors = self.collector.sample()
+        net_up, net_down = self.net.sample()
         deep = set(proc_vram) | set(smi)
         details = self.table.scan(deep, deep_python=self.config.show_all_python)
 
@@ -259,6 +265,9 @@ class Monitor(threading.Thread):
             groups=groups,
             errors=list(dict.fromkeys(errors + ([self.last_error] if self.last_error else [])))[:5],
             elapsed_ms=(time.perf_counter() - t0) * 1000.0,
+            net_up_bps=net_up,
+            net_down_bps=net_down,
+            net_ok=bool(self.net.ok),
             history={idx: list(buf) for idx, buf in self._history.items()},
         )
         return snap

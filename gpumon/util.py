@@ -29,6 +29,20 @@ def fmt_mib(mib: float) -> str:
     return f"{mib:.1f} MB"
 
 
+def fmt_speed(bps: float) -> str:
+    """每秒字节数 → 便于塞进任务栏的短字符串（不带空格，单位 K/M/G）。"""
+    value = float(bps or 0.0)
+    if value < 1024:
+        return f"{value:.0f}B"
+    if value < 1024 ** 2:
+        return f"{value / 1024:.0f}K"
+    if value < 1024 ** 3:
+        text = f"{value / 1024 ** 2:.1f}"
+        return (text[:-2] if text.endswith(".0") else text) + "M"
+    text = f"{value / 1024 ** 3:.1f}"
+    return (text[:-2] if text.endswith(".0") else text) + "G"
+
+
 def fmt_duration(seconds: float) -> str:
     seconds = max(0, int(seconds))
     if seconds < 60:

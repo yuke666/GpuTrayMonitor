@@ -13,5 +13,5 @@ config   配置 / 日志 / 开机自启
 app      入口装配
 """
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __all__ = ["__version__"]

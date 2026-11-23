@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import os
 import shutil
+import tempfile
 import subprocess
 import sys
 import time
@@ -190,7 +191,8 @@ def test_icons(base_tmp: str) -> None:
 
 
 def main() -> int:
-    base_tmp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_selftest_tmp")
+    # 放在系统临时目录：项目自身也可能是 git 仓库，会干扰"无标记目录"的归因预期
+    base_tmp = os.path.join(tempfile.gettempdir(), "gpumon-selftest")
     shutil.rmtree(base_tmp, ignore_errors=True)
     os.makedirs(base_tmp, exist_ok=True)
     try:
